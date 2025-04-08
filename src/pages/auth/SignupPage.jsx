@@ -40,7 +40,8 @@ const SignupPage = () => {
           name: signupData.name,
           email: signupData.email,
           dob: signupData.dob,
-          admin: false
+          admin: false,
+          uniqueId: user.user.uid
         };
         const collectionRef = collection(db, "users");
         await addDoc(collectionRef, userObject);

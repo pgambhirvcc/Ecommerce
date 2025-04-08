@@ -12,8 +12,10 @@ import LoginIcon from "@mui/icons-material/Login";
 import { Link, useNavigate } from "react-router-dom";
 import { validateInput } from "../../utils";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { auth, googleAuthProvider } from "../../firebaseConfig";
+import { auth, db, googleAuthProvider } from "../../firebaseConfig";
 import GoogleIcon from "@mui/icons-material/Google";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { getUserInfo } from "../../util";
 
 const LoginPage = () => {
   const [loginData, setLoginData] = useState({
@@ -33,12 +35,21 @@ const LoginPage = () => {
         loginData.email,
         loginData.password
       );
+
+      await getUserInfo(user.user.uid);
       if (user) {
         setOpenNotification(true);
         localStorage.setItem("current-user", JSON.stringify(user));
+
+        const userData = await getUserInfo(user.user.uid);
+
         setTimeout(() => {
-        // TODO: Check the admin/user permission and send them accordingly
-          navigate("/admin/dashboard");
+          if (userData.admin) {
+            navigate('/admin/dashboard');
+            window.location.reload();
+          } else {
+            navigate('/users/home');
+          }
         }, 2000);
       }
     } catch (error) {

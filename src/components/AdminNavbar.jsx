@@ -30,7 +30,8 @@ const AdminNavbar = () => {
 
   const signoutAdmin = async () => {
     await signOut(auth);
-    
+    localStorage.removeItem('current-user');
+
     setTimeout(() => {
         navigate('/login');
         toggleDrawer();

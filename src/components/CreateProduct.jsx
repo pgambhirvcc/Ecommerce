@@ -20,6 +20,7 @@ const INPUT_DEFAULT = {
   image: "",
   category: "",
   price: 0,
+  amount: 0
 };
 
 import CloseIcon from "@mui/icons-material/Close";
